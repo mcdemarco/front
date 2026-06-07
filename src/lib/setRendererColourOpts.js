@@ -5,7 +5,7 @@ export const setRendererColourOpts = ({
   isParticipant,
   settings,
   context,
-  globalMe,
+  globalMe
 }) => {
   options.colourContext = context;
   let optioncolours = [];
@@ -62,27 +62,20 @@ export const setRendererColourOpts = ({
     optioncolours.length > 0 &&
     globalMe?.settings?.all?.myColor &&
 			isParticipant > 0 &&
-			metaGame
+			metaGame 
   ) {
 
-    console.log("b4", optioncolours);
-    const info = gameinfo.get(metaGame);
-    const temp = info?.customizations || [];
-		const customizationHints = temp.filter(h => "player" in h);
+			const info = gameinfo.get(metaGame);
+			const temp = info?.customizations || [];
+			const customizationHints = temp.filter(h => "player" in h);
 
-    if (customizationHints.length > 0) {
+    if (customizationHints && customizationHints.length > 0) {
       //If the game itself has rearranged the palette, need a different swap.
 			const player1Idx = customizationHints.find(h => h.player === 1).num - 1 || 0;
 			const mycolorTemp = optioncolours[player1Idx];
-			console.log(mycolorTemp);
 			const myplayerIdx = customizationHints.find(h => h.player === isParticipant + 1).num - 1;
 			optioncolours[player1Idx] = optioncolours[myplayerIdx];
-			console.log("mid", optioncolours);
-
 			optioncolours[myplayerIdx] = mycolorTemp;
-
-			console.log("after", optioncolours);
-			
     } else {
       const mycolor = optioncolours.shift();
       optioncolours.splice(isParticipant, 0, mycolor);
